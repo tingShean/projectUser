@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <table id="add_user">
+        <tbody>
+        <tr>
+            <td>Account</td>
+            <td><input type="text" id="account" name="account" /></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" id="password" name="password" /></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" id="add" value="Add user" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $("#add").click(adduser);//绑定添加事件
+    });
+
+    function adduser(e) {
+        //account = $(e).attr("account");
+        account = $("#account").val();
+        //password = $(e).attr("password");
+        password = $("#password").val();
+
+        console.log(account + " " + password);
+
+        var jData = JSON.stringify({
+            "account": account,
+            "password": password,
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/login/add_user/",
+            //data: jData,
+            data: JSON.stringify({
+                "account": account,
+                "password": password,
+            }),
+            dataType: "json",
+            //contentType: "application/json; charset=utf-8",
+
+            success: function(result) {
+                console.log("success");
+                if (result['status'] == 1) {
+                    alert(result['msg']);
+                    return;
+                }
+
+                $(".add_user").load("/login/add_user/ .add_user");
+            },
+
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+</body>
+</html>
