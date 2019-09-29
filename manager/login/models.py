@@ -13,7 +13,7 @@ class UserManagers(models.Model):
 
 
 class Admin(models.Model):
-    uid = models.ForeignKey(UserManagers, on_delete=models.CASCADE)
+    uid = models.IntegerField()
     manage_lv = models.IntegerField()
 
     class Meta:
@@ -21,7 +21,7 @@ class Admin(models.Model):
 
 
 class UserAuthorize(models.Model):
-    uid = models.ForeignKey(UserManagers, on_delete=models.CASCADE)
+    uid = models.IntegerField()
     page = models.CharField(max_length=20)
     authorize = models.IntegerField()
 

@@ -1,12 +1,41 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <table class="order_table">
-        <thead>
+    <table class="native_bar" width="100%" bgcolor="#000000" style="color:white;">
+        <tbody>
             <tr>
-                <th>Login success</th>
+                <td>管理後台</td>
+                <td></td>
+                <td></td>
+                {% if user %}
+                    <td>{{ user }}</td>
+                {% else %}
+                    <td>尚未登入</td>
+                {% endif %}
+                <td>Log Out</td>
             </tr>
-        </thead>
+        </tbody>
+    </table>
+    <table width="20%">
+        <tbody>
+            <tr>
+                {% if bar_list %}
+                    {% for bar in bar_list %}
+                        <p>{{ bar.page }}</p>
+                    {% endfor %}
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+    <table width="80%">
+        <tbody>
+        <tr>
+            管理權限等級
+        </tr>
+        <tr>
+            面板權限
+        </tr>
+        </tbody>
     </table>
 </body>
 </html>
