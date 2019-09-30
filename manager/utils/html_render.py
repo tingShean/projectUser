@@ -41,7 +41,7 @@ def web_render(request, tmpl, context, user=None, c_key=None, c_val=None):
                 page_title = page_serializer.validated_data['title']
                 bar_context += '<h3>{}</h3>'.format(page_title)
 
-            bar_context += '<a href="./{}/">{}</a></br>' \
+            bar_context += '<a href="/{}/">{}</a></br>' \
                            ''.format(page_serializer.validated_data['id'],
                                                page_serializer.validated_data['name'])
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from decorators.cookie import check_cookie
-from utils.tools import get_admin_uid_cookie
+from utils.tools import get_admin_uid_cookie, get_user_account
 from utils.html_render import web_render
 from login.models import UserAuthorize, UserManagers
 from .models import Users
@@ -74,14 +74,14 @@ def user_cash_log(request):
 
 
 # get user account by uid
-def get_user_account(uid):
-    try:
-        usr = UserManagers.objects.get(uid=uid)
-
-        if not usr:
-            raise
-
-    except Exception as e:
-        raise e
-
-    return usr.account
+# def get_user_account(uid):
+#     try:
+#         usr = UserManagers.objects.get(uid=uid)
+#
+#         if not usr:
+#             raise
+#
+#     except Exception as e:
+#         raise e
+#
+#     return usr.account

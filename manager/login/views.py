@@ -74,7 +74,7 @@ def index(request):
                                   '</td></tr>'.format(page_title)
 
                     bar_context += '<tr><td>' \
-                                   '<a href="./{}/">{}</a></br>' \
+                                   '<a href="/{}/">{}</a></br>' \
                                    '</td></tr>'.format(page_serializer.validated_data['id'], page_serializer.validated_data['name'])
 
                 # print(bar_context)

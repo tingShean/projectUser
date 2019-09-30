@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <table class="native_bar" width="100%" bgcolor="#000000" style="color:white;">
+        <tbody>
+            <tr>
+                <td>管理後台</td>
+                <td></td>
+                <td></td>
+                {% if user %}
+                    <td>{{ user }}</td>
+                {% else %}
+                    <td>尚未登入</td>
+                {% endif %}
+                <td>Log Out</td>
+            </tr>
+        </tbody>
+    </table>
+    <table width="100%">
+        <tr>
+        {% if bar_context %}
+            {% autoescape off %}
+                {{ bar_context }}
+            {% endautoescape %}
+        {% endif %}
+        {% if admin_lv %}
+            {% autoescape off %}
+                {{ admin_lv }}
+            {% endautoescape %}
+        {% endif %}
+        {% if page_auth %}
+            {% autoescape off %}
+                {{ page_auth }}
+            {% endautoescape %}
+        {% endif %}
+        </tr>
+    </table>
+</body>
+</html>
