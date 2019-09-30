@@ -38,10 +38,7 @@ def index(request):
                     'uid': uid,
                 }
 
-                # cookies
-                # resp = HttpResponse('Set admin uid')
-                # resp.set_cookie('admin_uid', uid)
-
+                # bar list
                 bar_serializer = UserAuthorizeGetSerializer(data=user)
 
                 if not bar_serializer.is_valid():
@@ -87,7 +84,11 @@ def index(request):
                     # 'bar_list': bar_serializer.validated_data['bar_list'],
                     'bar_context': bar_context,
                 }
-                return web_render(request, 'dashboard.index.html', context=context, c_key='admin_uid', c_val=uid)
+                # render_context = web_render(request, 'dashboard.index.html', context=context, c_key='admin_uid', c_val=uid)
+                resp = render(request, 'dashboard.index.html', context=context)
+                resp.set_cookie('admin_uid', uid)
+                # return web_render(request, 'dashboard.index.html', context=context, c_key='admin_uid', c_val=uid)
+                return resp
 
             # print(serializer.errors)
 

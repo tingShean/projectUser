@@ -23,7 +23,7 @@ class Admin(models.Model):
 class UserAuthorize(models.Model):
     uid = models.IntegerField()
     page = models.CharField(max_length=20)
-    authorize = models.IntegerField()
+    authorize = models.CharField(max_length=4)
 
     class Meta:
         db_table = 'user_authorize'

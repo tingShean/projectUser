@@ -5,10 +5,12 @@ from login.serializers import UserAuthorizeGetSerializer, PageNameGetSerializer
 def web_render(request, tmpl, context, user=None, c_key=None, c_val=None):
     """set cookie"""
 
-    resp = render(request, tmpl, context)
     if c_key and c_val:
+        resp = render(request, tmpl, context)
         resp.set_cookie(c_key, c_val)
-    elif user:
+        return resp
+
+    if user:
         bar_serializer = UserAuthorizeGetSerializer(data=user)
 
         if not bar_serializer.is_valid():
@@ -21,7 +23,7 @@ def web_render(request, tmpl, context, user=None, c_key=None, c_val=None):
         page = {}
         page_list = []
         page_title = ''
-        bar_context = ''
+        bar_context = '<td>'
         # get bar list by authorize
         for bar in bar_list:
             page['id'] = bar['page']
@@ -33,24 +35,23 @@ def web_render(request, tmpl, context, user=None, c_key=None, c_val=None):
 
             if not page_title:
                 page_title = page_serializer.validated_data['title']
-                bar_context += '<tr><td>' \
-                               '<h3>{}</h3>' \
-                               '</td></tr>'.format(page_title)
+                bar_context += '<h3>{}</h3>'.format(page_title)
 
             elif page_serializer.validated_data['title'] != page_title:
                 page_title = page_serializer.validated_data['title']
-                bar_context += '<tr><td>' \
-                               '<h3>{}</h3>' \
-                               '</td></tr>'.format(page_title)
+                bar_context += '<h3>{}</h3>'.format(page_title)
 
-            bar_context += '<tr><td>' \
-                           '<a href="./{}/">{}</a></br>' \
-                           '</td></tr>'.format(page_serializer.validated_data['id'],
+            bar_context += '<a href="./{}/">{}</a></br>' \
+                           ''.format(page_serializer.validated_data['id'],
                                                page_serializer.validated_data['name'])
+
+        bar_context += '</td>'
 
         # print(bar_context)
         context['bar_context'] = bar_context
+        # print(context)
 
-        resp.set_cookie('admin_uid', user['uid'])
+        return context
 
+    resp = render(request, tmpl, context)
     return resp

@@ -16,17 +16,12 @@
             </tr>
         </tbody>
     </table>
-    <div width="20%">
+    <table width="100%">
         {% if bar_context %}
-            {{ bar_context|safe }}
             {% autoescape off %}
                 {{ bar_context }}
             {% endautoescape %}
         {% endif %}
-    </div>
-    <div width="80%">
-        <p>管理權限等級</p>
-        <p>面板權限</p>
-    </div>
+    </table>
 </body>
 </html>
