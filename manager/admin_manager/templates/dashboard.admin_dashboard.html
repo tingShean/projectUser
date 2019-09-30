@@ -35,5 +35,64 @@
         {% endif %}
         </tr>
     </table>
+    <table width="100%">
+        <tr>
+            <td>
+                <div align="center">
+                <input type="button" name="upd_btn" id="upd_btn" value="儲存" />
+                <input type="button" name="cancel" id="cancel" value="取消" /></br>
+                <input type="button" name="del_btn" id="del_btn" value="刪除使用者" />
+                </div>
+            </td>
+        </tr>
+    </table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $("#upd_btn").click(update_user);
+        $("#cancel").click(reload_page);
+        $("#del_btn").click(delete_user);
+    });
+
+    function reload_page(e) {
+        $(".admin_manage").load("/admin/dashboard/ .admin_manage");
+    }
+
+    function update_user(e) {
+        var auth = new Object();
+        //var manage_lv = $("select.manage_lv").children("option:selected").val();
+        auth["manage_lv"] = $("select.manage_lv").children("option:selected").val();
+        //var manager = $("select.manager").children("option:selected").val();
+        auth["manager"] = $("select.manager").children("option:selected").val();
+        //alert(manage_lv + manager);
+
+        //var chk = [];
+        $.each($("input[type='checkbox'].auth:checked"), function() {
+            //chk.push($(this).val());
+            if (!($(this).attr("name") in auth)) {
+                auth[$(this).attr("name")] = ""
+            }
+            auth[$(this).attr("name")] += $(this).val();
+        });
+        //alert(chk);
+        console.log(auth);
+        console.log(JSON.stringify(auth));
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/dashboard/",
+            dataType: "json",
+            data: JSON.stringify(auth),
+            //contentType: "application/json",
+
+            success: function(result) {
+                alert(result);
+            },
+        });
+    }
+
+    function delete_user(e) {
+    }
+</script>
 </body>
 </html>
