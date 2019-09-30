@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserManagers, Admin, UserAuthorize
+from .models import UserManagers, Admin, UserAuthorize, PageName
 
 
 class UserManagersSerializer(serializers.Serializer):
@@ -23,7 +23,7 @@ class UserManagersSerializer(serializers.Serializer):
         obj = super().to_representation(data)
         obj['uid'] = admin.uid
         obj['account'] = admin.account
-        print(obj)
+        # print(obj)
 
         return obj
 
@@ -84,6 +84,30 @@ class UserAuthorizeGetSerializer(serializers.Serializer):
                 'page': bar.page,
                 'authorize': bar.authorize,
             })
-        print(obj)
+        # print(obj)
 
         return obj
+
+
+class PageNameGetSerializer(serializers.Serializer):
+    id = serializers.CharField(required=True)
+    title = serializers.CharField(required=False)
+    name = serializers.CharField(required=False)
+
+    def validate(self, attrs):
+        page = PageName.objects.get(id=attrs['id'])
+        if page:
+            return attrs
+
+        raise serializers.ValidationError('page not found')
+
+    def to_internal_value(self, data):
+        page = PageName.objects.get(id=data.get('id'))
+        if page:
+            obj = super().to_representation(data)
+            obj['title'] = page.title
+            obj['name'] = page.name
+
+            return obj
+
+        raise serializers.ValidationError('page not found')

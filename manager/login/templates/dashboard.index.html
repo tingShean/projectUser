@@ -16,26 +16,17 @@
             </tr>
         </tbody>
     </table>
-    <table width="20%">
-        <tbody>
-            <tr>
-                {% if bar_list %}
-                    {% for bar in bar_list %}
-                        <p>{{ bar.page }}</p>
-                    {% endfor %}
-                {% endif %}
-            </tr>
-        </tbody>
-    </table>
-    <table width="80%">
-        <tbody>
-        <tr>
-            管理權限等級
-        </tr>
-        <tr>
-            面板權限
-        </tr>
-        </tbody>
-    </table>
+    <div width="20%">
+        {% if bar_context %}
+            {{ bar_context|safe }}
+            {% autoescape off %}
+                {{ bar_context }}
+            {% endautoescape %}
+        {% endif %}
+    </div>
+    <div width="80%">
+        <p>管理權限等級</p>
+        <p>面板權限</p>
+    </div>
 </body>
 </html>

@@ -1,8 +1,10 @@
 from django.shortcuts import render
+# from django.http import HttpResponse
+from utils.html_render import web_render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from django.template import loader
-from .serializers import UserManagersSerializer, UserManagersAddSerializer, UserAuthorizeGetSerializer
+from .serializers import UserManagersSerializer, UserManagersAddSerializer, UserAuthorizeGetSerializer, PageNameGetSerializer
 
 import json
 
@@ -35,6 +37,11 @@ def index(request):
                 user = {
                     'uid': uid,
                 }
+
+                # cookies
+                # resp = HttpResponse('Set admin uid')
+                # resp.set_cookie('admin_uid', uid)
+
                 bar_serializer = UserAuthorizeGetSerializer(data=user)
 
                 if not bar_serializer.is_valid():
@@ -42,19 +49,53 @@ def index(request):
                     return render(request, 'login.index.html', context={})
 
                 # print(bar_serializer.validated_data['bar_list'])
+                bar_list = bar_serializer.validated_data['bar_list']
+
+                page = {}
+                page_list = []
+                page_title = ''
+                bar_context = ''
+                # get bar list by authorize
+                for bar in bar_list:
+                    page['id'] = bar['page']
+
+                    page_serializer = PageNameGetSerializer(data=page)
+                    if not page_serializer.is_valid():
+                        print(page_serializer.errors)
+                        return render(request, 'login.index.html', context={})
+
+                    if not page_title:
+                        page_title = page_serializer.validated_data['title']
+                        bar_context += '<tr><td>' \
+                                       '<h3>{}</h3>' \
+                                       '</td></tr>'.format(page_title)
+
+                    elif page_serializer.validated_data['title'] != page_title:
+                        page_title = page_serializer.validated_data['title']
+                        bar_context += '<tr><td>' \
+                                  '<h3>{}</h3>' \
+                                  '</td></tr>'.format(page_title)
+
+                    bar_context += '<tr><td>' \
+                                   '<a href="./{}/">{}</a></br>' \
+                                   '</td></tr>'.format(page_serializer.validated_data['id'], page_serializer.validated_data['name'])
+
+                # print(bar_context)
+
                 context = {
                     'user': serializer.validated_data['account'],
-                    'bar_list': bar_serializer.validated_data['bar_list'],
+                    # 'bar_list': bar_serializer.validated_data['bar_list'],
+                    'bar_context': bar_context,
                 }
-                return render(request, 'dashboard.index.html', context=context)
+                return web_render(request, 'dashboard.index.html', context=context, c_key='admin_uid', c_val=uid)
 
             # print(serializer.errors)
 
         except Exception as e:
             print('error', e)
-            return render(request, 'login.index.html', context={})
+            return web_render(request, 'login.index.html', context={})
 
-        return render(request, 'login.index.html', context={})
+        return web_render(request, 'login.index.html', context={})
 
 
 @csrf_exempt
