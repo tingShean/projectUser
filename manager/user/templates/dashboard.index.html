@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <table class="native_bar" width="100%" bgcolor="#000000" style="color:white;">
+        <tbody>
+            <tr>
+                <td>管理後台</td>
+                <td></td>
+                <td></td>
+                {% if user %}
+                    <td>{{ user }}</td>
+                {% else %}
+                    <td>尚未登入</td>
+                {% endif %}
+                <td>Log Out</td>
+            </tr>
+        </tbody>
+    </table>
+    <div width="20%">
+        {% if bar_context %}
+            {{ bar_context|safe }}
+            {% autoescape off %}
+                {{ bar_context }}
+            {% endautoescape %}
+        {% endif %}
+    </div>
+    <div width="80%">
+        <p>管理權限等級</p>
+        <p>面板權限</p>
+    </div>
+</body>
+</html>
