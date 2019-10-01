@@ -67,10 +67,13 @@
         //alert(manage_lv + manager);
 
         //var chk = [];
+        $.each($("input[type='checkbox'].auth"), function() {
+                auth[$(this).attr("name")] = "";
+        });
         $.each($("input[type='checkbox'].auth:checked"), function() {
             //chk.push($(this).val());
             if (!($(this).attr("name") in auth)) {
-                auth[$(this).attr("name")] = ""
+                auth[$(this).attr("name")] = "";
             }
             auth[$(this).attr("name")] += $(this).val();
         });
